@@ -13,9 +13,63 @@
 [uint32]$Script:CurrentDownloadedFiles = 0
 
 
+function Get-ExternalsLibraryPath {
+    [CmdletBinding(SupportsShouldProcess)]
+    param()
+
+    $RootPath = (Resolve-Path -Path "$PSScriptRoot\..").Path
+    $LibPath = Join-Path "$RootPath" "lib"
+    return $LibPath
+}
+
+function Register-HtmlAgilityPack2a {
+    [CmdletBinding(SupportsShouldProcess)]
+    param()
+    begin {
+        
+        $ExternalsLibraryPath = Get-ExternalsLibraryPath
+        $LibPath = "{0}\{1}\HtmlAgilityPack.dll" -f "$ExternalsLibraryPath", "$($PSVersionTable.PSEdition)"
+    }
+    process {
+        try {
+            if (-not (Test-Path -Path "$LibPath" -PathType Leaf)) { throw "no such file `"$LibPath`"" }
+            if (!("HtmlAgilityPack.HtmlDocument" -as [type])) {
+                Write-Verbose "Registering HtmlAgilityPack... "
+                add-type -Path "$LibPath"
+            } else {
+                Write-Verbose "HtmlAgilityPack already registered "
+            }
+        } catch {
+            Show-ExceptionDetails ($_) -ShowStack
+        }
+    }
+}
+
+
+function Get-IrfaViewPath {
+    [CmdletBinding(SupportsShouldProcess, SupportsPaging = $true)]
+    param()
+    $Path = "C:\Programs\IrfaView\i_view64.exe"
+    $Path
+}
+
+
+function Open-PreviewLocalPicture {
+    [CmdletBinding(SupportsShouldProcess, SupportsPaging = $true)]
+    param(
+        [Parameter(Mandatory, HelpMessage = "picture path")]
+        [ValidateNotNullOrEmpty()]
+        [string]$Path
+    )
+
+    $IrfaViewPath = Get-IrfaViewPath
+    & "$IrfaViewPath" "$Path"
+}
+
+
 
 function Get-FontCategoryIdFromName {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param(
         [Parameter(Mandatory = $true, HelpMessage = "Symbolic font category name (e.g. General_Various)")]
         [ValidateNotNullOrEmpty()]
@@ -77,7 +131,7 @@ function Get-FontCategoryIdFromName {
 
 
 function Invoke-ListDafontFonts {
-    [CmdletBinding(SupportsShouldProcess, SupportsPaging = $true)]
+    [CmdletBinding(SupportsShouldProcess= $true, SupportsPaging = $true)]
     param(
         [Parameter(Mandatory, HelpMessage = "Font category name (e.g. General_Various)")]
         [ValidateNotNullOrEmpty()]
@@ -178,19 +232,19 @@ function Invoke-ListDafontFonts {
     }
 }
 
-function Invoke-ListDafontFontsPreview {
+function Get-daFontsPreviewUrls {
     [CmdletBinding(SupportsShouldProcess, SupportsPaging = $true)]
     param(
-        [Parameter(Mandatory, HelpMessage = "Font category name (e.g. General_Various)")]
+        [Parameter(Position=0,Mandatory=$True, HelpMessage = "Font category name (e.g. General_Various)")]
         [ValidateNotNullOrEmpty()]
         [string]$CategoryName,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Position=1,Mandatory=$false)]
         [ValidateRange(1, 50)]
         [int]$Page = 1,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Position=2,Mandatory = $false)]
         [ValidateSet(25, 50, 100, 200)]
         [int]$FontsPerPage = 200,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Position=3,Mandatory = $false)]
         [ValidateLength(4, 64)]
         [ValidateNotNullOrEmpty()]
         [string]$Text
@@ -227,7 +281,7 @@ function Invoke-ListDafontFontsPreview {
             Write-Verbose "Response received successfully"
 
             # Load HTMLAgilityPack
-             Register-HtmlAgilityPack 
+             Register-HtmlAgilityPack2a 
             $HtmlContent = $resp.Content
             $HtmlDoc = New-Object HtmlAgilityPack.HtmlDocument
             $HtmlDoc.LoadHtml($HtmlContent)
@@ -308,53 +362,6 @@ function Invoke-ListDafontFontsPreview {
 }
 
 
-
-function Register-HtmlAgilityPack {
-    [CmdletBinding(SupportsShouldProcess)]
-    param()
-    begin {
-        $ModulePath = (get-clientToolsModuleInformation).ModuleInstallPath
-        $ExportsPath = Join-Path "$ModulePath" "exports"
-        $LibPath = "{0}\lib\{1}\HtmlAgilityPack.dll" -f "$ExportsPath", "$($PSVersionTable.PSEdition)"
-    }
-    process {
-        try {
-            if (-not (Test-Path -Path "$LibPath" -PathType Leaf)) { throw "no such file `"$LibPath`"" }
-            if (!("HtmlAgilityPack.HtmlDocument" -as [type])) {
-                Write-Verbose "Registering HtmlAgilityPack... "
-                add-type -Path "$LibPath"
-            } else {
-                Write-Verbose "HtmlAgilityPack already registered "
-            }
-        } catch {
-            Show-ExceptionDetails ($_) -ShowStack
-        }
-    }
-}
-
-
-function Get-IrfaViewPath {
-    [CmdletBinding(SupportsShouldProcess, SupportsPaging = $true)]
-    param()
-    $Path = "C:\Programs\IrfaView\i_view64.exe"
-    $Path
-}
-
-
-function Open-PreviewLocalPicture {
-    [CmdletBinding(SupportsShouldProcess, SupportsPaging = $true)]
-    param(
-        [Parameter(Mandatory, HelpMessage = "picture path")]
-        [ValidateNotNullOrEmpty()]
-        [string]$Path
-    )
-
-    $IrfaViewPath = Get-IrfaViewPath
-    & "$IrfaViewPath" "$Path"
-}
-
-
-
 function Open-PreviewUrlPicture {
     [CmdletBinding(SupportsShouldProcess, SupportsPaging = $true)]
     param(
@@ -396,7 +403,7 @@ function Open-PreviewUrlPicture {
 }
 
 function Show-ImagesPreviewDialog {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param(
         [Parameter(Mandatory, ValueFromPipeline)]
         [string[]]$ImagePaths
@@ -456,7 +463,7 @@ function Show-ImagesPreviewDialog {
 
 
 function Get-FontsModuleTemporaryDirectory {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param()
     process {
 
@@ -471,7 +478,7 @@ function Get-FontsModuleTemporaryDirectory {
 
 
 function Get-FontsModuleTmpScriptsDirectory {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param()
     process {
 
@@ -489,7 +496,7 @@ function Get-FontsModuleTmpScriptsDirectory {
 
 
 function Get-FontPreviewPicturePath {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param(
         [Parameter(Mandatory = $true, position = 0, ValueFromPipeline = $True)]
         [ValidateNotNullOrEmpty()]
@@ -528,7 +535,7 @@ function Get-FontPreviewPicturePath {
 
 
 function New-ScriptDecl {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param(
         [Parameter(Mandatory = $true, position = 0, ValueFromPipeline = $True)]
         [ValidateNotNullOrEmpty()]
@@ -554,7 +561,7 @@ function New-ScriptDecl {
 }
 
 function New-ScriptDecl2 {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param(
         [Parameter(Mandatory = $true, position = 0, ValueFromPipeline = $True)]
         [ValidateNotNullOrEmpty()]
@@ -581,7 +588,7 @@ function New-ScriptDecl2 {
 
 
 function Open-PreviewLocalPicture {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param(
         [Parameter(Mandatory, HelpMessage = "picture path")]
         [ValidateNotNullOrEmpty()]
@@ -592,7 +599,7 @@ function Open-PreviewLocalPicture {
 
 
 function Show-ImagePreviewDialog {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param(
         [Parameter(Mandatory)]
         [string]$ImagePath
@@ -620,7 +627,7 @@ function Show-ImagePreviewDialog {
 
 
 function Test-PreviewLocalPicture {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param(
         [Parameter(Mandatory = $true, position = 0)]
         [ValidateLength(4, 64)]
@@ -636,17 +643,20 @@ function Test-PreviewLocalPicture {
         [int]$Page
     )
     try {
+        $MaxFonts = 50
         
         [System.Collections.ArrayList]$Script:TmpPreviewImagePaths = [System.Collections.ArrayList]::new()
-        $Script:CurrentImageIndex = 0
-        $Data = Invoke-ListDafontFontsPreview -CategoryName "$CategoryName" -Page $Page -FontsPerPage $MaxFonts -Text "$Text"
+        $Script:CurrentImageIndex = 1
+        $Data = Get-daFontsPreviewUrls -CategoryName "$CategoryName" -Page $Page -FontsPerPage $MaxFonts -Text "$Text"
     
 
         $Data | % {
             [bool]$DownloadResult = $False
             $url = $_.PreviewUrl
+            Write-Verbose "Get-FontPreviewPicturePath $url $CategoryName"
+            Write-Verbose "$NewPicturePath"
             $NewPicturePath = Get-FontPreviewPicturePath $url $CategoryName
-            if (-not (Test-Path $NewPicturePath)) {
+            if (-not (Test-Path "$NewPicturePath" -PathType LEaf)) {
                 $imgPath = Open-PreviewUrlPicture $url
                 [void]$Script:TmpPreviewImagePaths.Add($imgPath)
                 $Script:CurrentImageIndex = $Script:CurrentImageIndex + 1
@@ -657,14 +667,19 @@ function Test-PreviewLocalPicture {
                 $Script:CurrentDownloadedFiles++
                 [bool]$DownloadResult = $True
             } else {
+                Write-Host "Image preview $NewPicturePath exits!"
                 Write-Verbose "$index" 
-                Write-Verbose " Failed"
-                [bool]$DownloadResult = $False
+                Write-Verbose " already here"
+                [bool]$DownloadResult = $true
+                 $Path=$NewPicturePath.Replace('\\','\')
+            [void]$Script:TmpPreviewImagePaths.Add($Path)
             }
 
+           
             [pscustomobject]$resultsObject = [pscustomobject]@{
                     ImageIndex = $Script:CurrentImageIndex
                     TotalImages = $MaxFonts
+                    ImagePath = "$Path"
                     Category  = "$CategoryName"
                     DownloadResult = $DownloadResult
                     CurrentPage = $Page
@@ -675,22 +690,22 @@ function Test-PreviewLocalPicture {
             Write-Output "$resultJson"
         }
       
-
+Show-ImagesPreviewDialog $Script:TmpPreviewImagePaths
     } catch {
         Show-ExceptionDetails ($_) -ShowStack
     }
     #Show-ImagesPreviewDialog -ImagePaths $List
 }
 
-function Test-DriveInsightFonts {
-    [CmdletBinding()]
+function Invoke-DownloadFontsPreview {
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param(
-        [Parameter(Mandatory = $false)]
+        [Parameter(Position=0,Mandatory=$false)]
         [System.Collections.ArrayList]$PresetCategories,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Position=1,Mandatory=$false)]
         [ValidateSet(25, 50, 100, 200)]
         [int]$FontsPerPage = 200,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Position=2,Mandatory=$false)]
         [ValidateRange(1, 50)]
         [int]$PagePerCategories = 2
     )
@@ -728,7 +743,7 @@ function Test-DriveInsightFonts {
 
 
 function Get-PreviewFontsCategories {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess= $true)]
     param()
     try {
         [System.Collections.ArrayList]$List = [System.Collections.ArrayList]::new()

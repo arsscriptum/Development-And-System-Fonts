@@ -102,6 +102,117 @@ In short:*
 - [VT323.zip](packages/RetroHackerTerminalVibe/VT323.zip)
 
 
+
+
+
+<center>
+<img src="img/dafonts.png" alt="title" />
+</center>
+
+
+<center>
+<img src="img/line.png" alt="title" />
+</center>
+
+
 ## daFonts.com
 
-The packages Im using from **daFonts.com**
+The packages Im using from **daFonts.com** are listed in the [packages/daFonts.com](packages/daFonts.com) folder.
+
+The script [ListFonts](scripts/ListFonts.ps1) is a quick and dirty tool to get and preview the online fonts locally.
+
+
+### Fonts Categories
+
+```powershell
+> Get-PreviewFontsCategories
+
+Culture_Various
+Culture_Modern
+Techno_Various
+Techno_Square
+Techno_Square
+Techno_LCD
+General_Stencil_Army
+General_Typewriter
+General_Various
+```
+
+
+<center>
+<img src="img/dafonts_cat.png" alt="title" />
+</center>
+
+
+
+### Get Download and Preview Urls
+
+```powershell
+> Save-daFontsPackages Techno_LCD -Page 1 -FontsPerPage 50 -Text "This is a TEst String"
+
+FontName     : DS-Digital
+DafontPage   : https://www.dafont.com/ds-digital.font?fpp=50&text=This+is+a+TEst+String
+Author       : Dusit Supasawat
+DownloadLink : https://dl.dafont.com/dl/?f=ds_digital
+License      : Shareware
+PreviewUrl   : https://img.dafont.com/preview.php?text=This+is+a+TEst+String&ttf=ds_digital2&ext=1&size=52&psize=m&y=58
+
+FontName     : Digital 7
+DafontPage   : https://www.dafont.com/digital-7.font?fpp=50&text=This+is+a+TEst+String
+Author       : Style-7
+DownloadLink : https://dl.dafont.com/dl/?f=digital_7
+License      : Free for personal use
+PreviewUrl   : https://img.dafont.com/preview.php?text=This+is+a+TEst+String&ttf=digital_73&ext=1&size=76&psize=m&y=68
+
+FontName     : Ledlight
+DafontPage   : https://www.dafont.com/ledlight.font?fpp=50&text=This+is+a+TEst+String
+Author       : Billy Argel Fonts �
+DownloadLink : https://dl.dafont.com/dl/?f=ledlight
+License      : Free for personal use
+PreviewUrl   : https://img.dafont.com/preview.php?text=This+is+a+TEst+String&ttf=ledlight0&ext=2&size=64&psize=m&y=70
+```
+
+<center>
+<img src="img/showurls.png" alt="title" />
+</center>
+
+
+
+### Show Previews
+
+```powershell
+> Test-PreviewLocalPicture "DriveInsight - monitor your devices health" -CategoryName 'Techno_LCD' -ImagesPerFonts 25 -Page 1
+Image preview C:\Share\PreviewFonts\Techno_LCD\ds_digital2.png exits!
+{
+  "ImageIndex": 1,
+  "TotalImages": 50,
+  "ImagePath": "C:\\Share\\PreviewFonts\\Techno_LCD\\ds_digital2.png",
+  "Category": "Techno_LCD",
+  "DownloadResult": true,
+  "CurrentPage": 1,
+  "NumDownloaded": 0,
+  "TotalFonts": 0
+}
+Image preview C:\Share\PreviewFonts\Techno_LCD\digital_73.png exits!
+{
+  "ImageIndex": 1,
+  "TotalImages": 50,
+  "ImagePath": "C:\\Share\\PreviewFonts\\Techno_LCD\\digital_73.png",
+  "Category": "Techno_LCD",
+  "DownloadResult": true,
+  "CurrentPage": 1,
+  "NumDownloaded": 0,
+  "TotalFonts": 0
+```
+
+
+<center>
+<img src="img/showpreview.png" alt="title" />
+</center>
+
+
+
+<center>
+<img src="img/line.png" alt="title" />
+</center>
+

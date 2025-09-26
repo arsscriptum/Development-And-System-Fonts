@@ -216,3 +216,10 @@ Image preview C:\Share\PreviewFonts\Techno_LCD\digital_73.png exits!
 <img src="img/line.png" alt="title" />
 </center>
 
+
+--------------------------------------------------
+
+```powershell
+Show-FontPreview -Fonts $fs -StartBrave
+$fs =  Get-CustomfontsRealNamesList
+```

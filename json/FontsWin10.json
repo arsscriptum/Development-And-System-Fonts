@@ -1,0 +1,622 @@
+[
+  {
+    "PrettyName": "Arial (TrueType)",
+    "FontFile": "arial.ttf"
+  },
+  {
+    "PrettyName": "Arial Black (TrueType)",
+    "FontFile": "ariblk.ttf"
+  },
+  {
+    "PrettyName": "Arial Bold (TrueType)",
+    "FontFile": "arialbd.ttf"
+  },
+  {
+    "PrettyName": "Arial Bold Italic (TrueType)",
+    "FontFile": "arialbi.ttf"
+  },
+  {
+    "PrettyName": "Arial Italic (TrueType)",
+    "FontFile": "ariali.ttf"
+  },
+  {
+    "PrettyName": "Bahnschrift (TrueType)",
+    "FontFile": "bahnschrift.ttf"
+  },
+  {
+    "PrettyName": "Calibri (TrueType)",
+    "FontFile": "calibri.ttf"
+  },
+  {
+    "PrettyName": "Calibri Bold (TrueType)",
+    "FontFile": "calibrib.ttf"
+  },
+  {
+    "PrettyName": "Calibri Bold Italic (TrueType)",
+    "FontFile": "calibriz.ttf"
+  },
+  {
+    "PrettyName": "Calibri Italic (TrueType)",
+    "FontFile": "calibrii.ttf"
+  },
+  {
+    "PrettyName": "Calibri Light (TrueType)",
+    "FontFile": "calibril.ttf"
+  },
+  {
+    "PrettyName": "Calibri Light Italic (TrueType)",
+    "FontFile": "calibrili.ttf"
+  },
+  {
+    "PrettyName": "Cambria & Cambria Math (TrueType)",
+    "FontFile": "cambria.ttc"
+  },
+  {
+    "PrettyName": "Cambria Bold (TrueType)",
+    "FontFile": "cambriab.ttf"
+  },
+  {
+    "PrettyName": "Cambria Bold Italic (TrueType)",
+    "FontFile": "cambriaz.ttf"
+  },
+  {
+    "PrettyName": "Cambria Italic (TrueType)",
+    "FontFile": "cambriai.ttf"
+  },
+  {
+    "PrettyName": "Candara (TrueType)",
+    "FontFile": "candara.ttf"
+  },
+  {
+    "PrettyName": "Candara Bold (TrueType)",
+    "FontFile": "candarab.ttf"
+  },
+  {
+    "PrettyName": "Candara Bold Italic (TrueType)",
+    "FontFile": "candaraz.ttf"
+  },
+  {
+    "PrettyName": "Candara Italic (TrueType)",
+    "FontFile": "candarai.ttf"
+  },
+  {
+    "PrettyName": "Candara Light (TrueType)",
+    "FontFile": "candaral.ttf"
+  },
+  {
+    "PrettyName": "Candara Light Italic (TrueType)",
+    "FontFile": "candarali.ttf"
+  },
+  {
+    "PrettyName": "Comic Sans MS (TrueType)",
+    "FontFile": "comic.ttf"
+  },
+  {
+    "PrettyName": "Comic Sans MS Bold (TrueType)",
+    "FontFile": "comicbd.ttf"
+  },
+  {
+    "PrettyName": "Comic Sans MS Bold Italic (TrueType)",
+    "FontFile": "comicz.ttf"
+  },
+  {
+    "PrettyName": "Comic Sans MS Italic (TrueType)",
+    "FontFile": "comici.ttf"
+  },
+  {
+    "PrettyName": "Consolas (TrueType)",
+    "FontFile": "consola.ttf"
+  },
+  {
+    "PrettyName": "Consolas Bold (TrueType)",
+    "FontFile": "consolab.ttf"
+  },
+  {
+    "PrettyName": "Consolas Bold Italic (TrueType)",
+    "FontFile": "consolaz.ttf"
+  },
+  {
+    "PrettyName": "Consolas Italic (TrueType)",
+    "FontFile": "consolai.ttf"
+  },
+  {
+    "PrettyName": "Constantia (TrueType)",
+    "FontFile": "constan.ttf"
+  },
+  {
+    "PrettyName": "Constantia Bold (TrueType)",
+    "FontFile": "constanb.ttf"
+  },
+  {
+    "PrettyName": "Constantia Bold Italic (TrueType)",
+    "FontFile": "constanz.ttf"
+  },
+  {
+    "PrettyName": "Constantia Italic (TrueType)",
+    "FontFile": "constani.ttf"
+  },
+  {
+    "PrettyName": "Corbel (TrueType)",
+    "FontFile": "corbel.ttf"
+  },
+  {
+    "PrettyName": "Corbel Bold (TrueType)",
+    "FontFile": "corbelb.ttf"
+  },
+  {
+    "PrettyName": "Corbel Bold Italic (TrueType)",
+    "FontFile": "corbelz.ttf"
+  },
+  {
+    "PrettyName": "Corbel Italic (TrueType)",
+    "FontFile": "corbeli.ttf"
+  },
+  {
+    "PrettyName": "Corbel Light (TrueType)",
+    "FontFile": "corbell.ttf"
+  },
+  {
+    "PrettyName": "Corbel Light Italic (TrueType)",
+    "FontFile": "corbelli.ttf"
+  },
+  {
+    "PrettyName": "Courier New (TrueType)",
+    "FontFile": "cour.ttf"
+  },
+  {
+    "PrettyName": "Courier New Bold (TrueType)",
+    "FontFile": "courbd.ttf"
+  },
+  {
+    "PrettyName": "Courier New Bold Italic (TrueType)",
+    "FontFile": "courbi.ttf"
+  },
+  {
+    "PrettyName": "Courier New Italic (TrueType)",
+    "FontFile": "couri.ttf"
+  },
+  {
+    "PrettyName": "Ebrima (TrueType)",
+    "FontFile": "ebrima.ttf"
+  },
+  {
+    "PrettyName": "Ebrima Bold (TrueType)",
+    "FontFile": "ebrimabd.ttf"
+  },
+  {
+    "PrettyName": "Franklin Gothic Medium (TrueType)",
+    "FontFile": "framd.ttf"
+  },
+  {
+    "PrettyName": "Franklin Gothic Medium Italic (TrueType)",
+    "FontFile": "framdit.ttf"
+  },
+  {
+    "PrettyName": "Gabriola (TrueType)",
+    "FontFile": "Gabriola.ttf"
+  },
+  {
+    "PrettyName": "Gadugi (TrueType)",
+    "FontFile": "gadugi.ttf"
+  },
+  {
+    "PrettyName": "Gadugi Bold (TrueType)",
+    "FontFile": "gadugib.ttf"
+  },
+  {
+    "PrettyName": "Georgia (TrueType)",
+    "FontFile": "georgia.ttf"
+  },
+  {
+    "PrettyName": "Georgia Bold (TrueType)",
+    "FontFile": "georgiab.ttf"
+  },
+  {
+    "PrettyName": "Georgia Bold Italic (TrueType)",
+    "FontFile": "georgiaz.ttf"
+  },
+  {
+    "PrettyName": "Georgia Italic (TrueType)",
+    "FontFile": "georgiai.ttf"
+  },
+  {
+    "PrettyName": "Impact (TrueType)",
+    "FontFile": "impact.ttf"
+  },
+  {
+    "PrettyName": "Ink Free (TrueType)",
+    "FontFile": "Inkfree.ttf"
+  },
+  {
+    "PrettyName": "Javanese Text (TrueType)",
+    "FontFile": "javatext.ttf"
+  },
+  {
+    "PrettyName": "Leelawadee UI (TrueType)",
+    "FontFile": "leelawui.ttf"
+  },
+  {
+    "PrettyName": "Leelawadee UI Bold (TrueType)",
+    "FontFile": "leelauib.ttf"
+  },
+  {
+    "PrettyName": "Leelawadee UI Semilight (TrueType)",
+    "FontFile": "leeluisl.ttf"
+  },
+  {
+    "PrettyName": "Lucida Console (TrueType)",
+    "FontFile": "lucon.TTF"
+  },
+  {
+    "PrettyName": "Lucida Sans Unicode (TrueType)",
+    "FontFile": "l_10646.ttf"
+  },
+  {
+    "PrettyName": "Malgun Gothic (TrueType)",
+    "FontFile": "malgun.ttf"
+  },
+  {
+    "PrettyName": "Malgun Gothic Bold (TrueType)",
+    "FontFile": "malgunbd.ttf"
+  },
+  {
+    "PrettyName": "Malgun Gothic SemiLight (TrueType)",
+    "FontFile": "malgunsl.ttf"
+  },
+  {
+    "PrettyName": "Microsoft Himalaya (TrueType)",
+    "FontFile": "himalaya.ttf"
+  },
+  {
+    "PrettyName": "Microsoft JhengHei & Microsoft JhengHei UI (TrueType)",
+    "FontFile": "msjh.ttc"
+  },
+  {
+    "PrettyName": "Microsoft JhengHei Bold & Microsoft JhengHei UI Bold (TrueType)",
+    "FontFile": "msjhbd.ttc"
+  },
+  {
+    "PrettyName": "Microsoft JhengHei Light & Microsoft JhengHei UI Light (TrueType)",
+    "FontFile": "msjhl.ttc"
+  },
+  {
+    "PrettyName": "Microsoft New Tai Lue (TrueType)",
+    "FontFile": "ntailu.ttf"
+  },
+  {
+    "PrettyName": "Microsoft New Tai Lue Bold (TrueType)",
+    "FontFile": "ntailub.ttf"
+  },
+  {
+    "PrettyName": "Microsoft PhagsPa (TrueType)",
+    "FontFile": "phagspa.ttf"
+  },
+  {
+    "PrettyName": "Microsoft PhagsPa Bold (TrueType)",
+    "FontFile": "phagspab.ttf"
+  },
+  {
+    "PrettyName": "Microsoft Sans Serif (TrueType)",
+    "FontFile": "micross.ttf"
+  },
+  {
+    "PrettyName": "Microsoft Tai Le (TrueType)",
+    "FontFile": "taile.ttf"
+  },
+  {
+    "PrettyName": "Microsoft Tai Le Bold (TrueType)",
+    "FontFile": "taileb.ttf"
+  },
+  {
+    "PrettyName": "Microsoft YaHei & Microsoft YaHei UI (TrueType)",
+    "FontFile": "msyh.ttc"
+  },
+  {
+    "PrettyName": "Microsoft YaHei Bold & Microsoft YaHei UI Bold (TrueType)",
+    "FontFile": "msyhbd.ttc"
+  },
+  {
+    "PrettyName": "Microsoft YaHei Light & Microsoft YaHei UI Light (TrueType)",
+    "FontFile": "msyhl.ttc"
+  },
+  {
+    "PrettyName": "Microsoft Yi Baiti (TrueType)",
+    "FontFile": "msyi.ttf"
+  },
+  {
+    "PrettyName": "MingLiU-ExtB & PMingLiU-ExtB & MingLiU_HKSCS-ExtB (TrueType)",
+    "FontFile": "mingliub.ttc"
+  },
+  {
+    "PrettyName": "Modern (All res)",
+    "FontFile": "modern.fon"
+  },
+  {
+    "PrettyName": "Mongolian Baiti (TrueType)",
+    "FontFile": "monbaiti.ttf"
+  },
+  {
+    "PrettyName": "MS Gothic & MS UI Gothic & MS PGothic (TrueType)",
+    "FontFile": "msgothic.ttc"
+  },
+  {
+    "PrettyName": "MV Boli (TrueType)",
+    "FontFile": "mvboli.ttf"
+  },
+  {
+    "PrettyName": "Myanmar Text (TrueType)",
+    "FontFile": "mmrtext.ttf"
+  },
+  {
+    "PrettyName": "Myanmar Text Bold (TrueType)",
+    "FontFile": "mmrtextb.ttf"
+  },
+  {
+    "PrettyName": "Nirmala UI (TrueType)",
+    "FontFile": "Nirmala.ttf"
+  },
+  {
+    "PrettyName": "Nirmala UI Bold (TrueType)",
+    "FontFile": "NirmalaB.ttf"
+  },
+  {
+    "PrettyName": "Nirmala UI Semilight (TrueType)",
+    "FontFile": "NirmalaS.ttf"
+  },
+  {
+    "PrettyName": "Palatino Linotype (TrueType)",
+    "FontFile": "pala.ttf"
+  },
+  {
+    "PrettyName": "Palatino Linotype Bold (TrueType)",
+    "FontFile": "palab.ttf"
+  },
+  {
+    "PrettyName": "Palatino Linotype Bold Italic (TrueType)",
+    "FontFile": "palabi.ttf"
+  },
+  {
+    "PrettyName": "Palatino Linotype Italic (TrueType)",
+    "FontFile": "palai.ttf"
+  },
+  {
+    "PrettyName": "Roman (All res)",
+    "FontFile": "roman.fon"
+  },
+  {
+    "PrettyName": "Script (All res)",
+    "FontFile": "script.fon"
+  },
+  {
+    "PrettyName": "Segoe MDL2 Assets (TrueType)",
+    "FontFile": "segmdl2.ttf"
+  },
+  {
+    "PrettyName": "Segoe Print (TrueType)",
+    "FontFile": "segoepr.ttf"
+  },
+  {
+    "PrettyName": "Segoe Print Bold (TrueType)",
+    "FontFile": "segoeprb.ttf"
+  },
+  {
+    "PrettyName": "Segoe Script (TrueType)",
+    "FontFile": "segoesc.ttf"
+  },
+  {
+    "PrettyName": "Segoe Script Bold (TrueType)",
+    "FontFile": "segoescb.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI (TrueType)",
+    "FontFile": "segoeui.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Black (TrueType)",
+    "FontFile": "seguibl.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Black Italic (TrueType)",
+    "FontFile": "seguibli.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Bold (TrueType)",
+    "FontFile": "segoeuib.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Bold Italic (TrueType)",
+    "FontFile": "segoeuiz.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Emoji (TrueType)",
+    "FontFile": "seguiemj.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Historic (TrueType)",
+    "FontFile": "seguihis.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Italic (TrueType)",
+    "FontFile": "segoeuii.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Light (TrueType)",
+    "FontFile": "segoeuil.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Light Italic (TrueType)",
+    "FontFile": "seguili.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Semibold (TrueType)",
+    "FontFile": "seguisb.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Semibold Italic (TrueType)",
+    "FontFile": "seguisbi.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Semilight (TrueType)",
+    "FontFile": "segoeuisl.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Semilight Italic (TrueType)",
+    "FontFile": "seguisli.ttf"
+  },
+  {
+    "PrettyName": "Segoe UI Symbol (TrueType)",
+    "FontFile": "seguisym.ttf"
+  },
+  {
+    "PrettyName": "SimSun & NSimSun (TrueType)",
+    "FontFile": "simsun.ttc"
+  },
+  {
+    "PrettyName": "SimSun-ExtB (TrueType)",
+    "FontFile": "simsunb.ttf"
+  },
+  {
+    "PrettyName": "Sitka Small & Sitka Text & Sitka Subheading & Sitka Heading & Sitka Display & Sitka Banner (TrueType)",
+    "FontFile": "Sitka.ttc"
+  },
+  {
+    "PrettyName": "Sitka Small Bold & Sitka Text Bold & Sitka Subheading Bold & Sitka Heading Bold & Sitka Display Bold & Sitka Banner Bold (TrueType)",
+    "FontFile": "SitkaB.ttc"
+  },
+  {
+    "PrettyName": "Sitka Small Bold Italic & Sitka Text Bold Italic & Sitka Subheading Bold Italic & Sitka Heading Bold Italic & Sitka Display Bold Italic & Sitka Banner Bold Italic (TrueType)",
+    "FontFile": "SitkaZ.ttc"
+  },
+  {
+    "PrettyName": "Sitka Small Italic & Sitka Text Italic & Sitka Subheading Italic & Sitka Heading Italic & Sitka Display Italic & Sitka Banner Italic (TrueType)",
+    "FontFile": "SitkaI.ttc"
+  },
+  {
+    "PrettyName": "Sylfaen (TrueType)",
+    "FontFile": "sylfaen.ttf"
+  },
+  {
+    "PrettyName": "Symbol (TrueType)",
+    "FontFile": "symbol.ttf"
+  },
+  {
+    "PrettyName": "Tahoma (TrueType)",
+    "FontFile": "tahoma.ttf"
+  },
+  {
+    "PrettyName": "Tahoma Bold (TrueType)",
+    "FontFile": "tahomabd.ttf"
+  },
+  {
+    "PrettyName": "Times New Roman (TrueType)",
+    "FontFile": "times.ttf"
+  },
+  {
+    "PrettyName": "Times New Roman Bold (TrueType)",
+    "FontFile": "timesbd.ttf"
+  },
+  {
+    "PrettyName": "Times New Roman Bold Italic (TrueType)",
+    "FontFile": "timesbi.ttf"
+  },
+  {
+    "PrettyName": "Times New Roman Italic (TrueType)",
+    "FontFile": "timesi.ttf"
+  },
+  {
+    "PrettyName": "Trebuchet MS (TrueType)",
+    "FontFile": "trebuc.ttf"
+  },
+  {
+    "PrettyName": "Trebuchet MS Bold (TrueType)",
+    "FontFile": "trebucbd.ttf"
+  },
+  {
+    "PrettyName": "Trebuchet MS Bold Italic (TrueType)",
+    "FontFile": "trebucbi.ttf"
+  },
+  {
+    "PrettyName": "Trebuchet MS Italic (TrueType)",
+    "FontFile": "trebucit.ttf"
+  },
+  {
+    "PrettyName": "Verdana (TrueType)",
+    "FontFile": "verdana.ttf"
+  },
+  {
+    "PrettyName": "Verdana Bold (TrueType)",
+    "FontFile": "verdanab.ttf"
+  },
+  {
+    "PrettyName": "Verdana Bold Italic (TrueType)",
+    "FontFile": "verdanaz.ttf"
+  },
+  {
+    "PrettyName": "Verdana Italic (TrueType)",
+    "FontFile": "verdanai.ttf"
+  },
+  {
+    "PrettyName": "Webdings (TrueType)",
+    "FontFile": "webdings.ttf"
+  },
+  {
+    "PrettyName": "Wingdings (TrueType)",
+    "FontFile": "wingding.ttf"
+  },
+  {
+    "PrettyName": "Yu Gothic Bold & Yu Gothic UI Semibold & Yu Gothic UI Bold (TrueType)",
+    "FontFile": "YuGothB.ttc"
+  },
+  {
+    "PrettyName": "Yu Gothic Light & Yu Gothic UI Light (TrueType)",
+    "FontFile": "YuGothL.ttc"
+  },
+  {
+    "PrettyName": "Yu Gothic Medium & Yu Gothic UI Regular (TrueType)",
+    "FontFile": "YuGothM.ttc"
+  },
+  {
+    "PrettyName": "Yu Gothic Regular & Yu Gothic UI Semilight (TrueType)",
+    "FontFile": "YuGothR.ttc"
+  },
+  {
+    "PrettyName": "Courier 10,12,15",
+    "FontFile": "COURE.FON"
+  },
+  {
+    "PrettyName": "Courier 10,12,15 (120)",
+    "FontFile": "COURF.FON"
+  },
+  {
+    "PrettyName": "MS Serif 8,10,12,14,18,24",
+    "FontFile": "SERIFE.FON"
+  },
+  {
+    "PrettyName": "MS Serif 8,10,12,14,18,24 (120)",
+    "FontFile": "SERIFF.FON"
+  },
+  {
+    "PrettyName": "MS Sans Serif 8,10,12,14,18,24",
+    "FontFile": "SSERIFE.FON"
+  },
+  {
+    "PrettyName": "MS Sans Serif 8,10,12,14,18,24 (120)",
+    "FontFile": "SSERIFF.FON"
+  },
+  {
+    "PrettyName": "Small Fonts",
+    "FontFile": "SMALLE.FON"
+  },
+  {
+    "PrettyName": "Small Fonts (120)",
+    "FontFile": "SMALLF.FON"
+  },
+  {
+    "PrettyName": "Holo MDL2 Assets (TrueType)",
+    "FontFile": "holomdl2.ttf"
+  },
+  {
+    "PrettyName": "SimSun-ExtG (TrueType)",
+    "FontFile": "SimsunExtG.ttf"
+  }
+]

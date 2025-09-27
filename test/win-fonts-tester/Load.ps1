@@ -19,6 +19,8 @@
 
 [System.Windows.Window]$Script:Window=$Null
 
+$tmpJsonFonts = Get-Content -Path "$PSScriptRoot\allfonts.json" -Raw | ConvertFrom-Json
+$Script:allfontsJson = set-variable -Name "allfontsJson" -Value $first -Option AllScope -Force -Scope Script -PassThru | Select -ExpandProperty Value
 
 function Write-RichTextLog {
     [CmdletBinding(SupportsShouldProcess)]
@@ -271,27 +273,70 @@ function Invoke-OnSelectedFontChanged {
     param ()
 }
 
-function Invoke-OnBrowseInClicked  { 
-    [CmdletBinding(SupportsShouldProcess)]
-    param ()
-    $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
-    $dialog.Description = "Select input folder"
-    $dialog.ShowNewFolderButton = $true
-    $result = $dialog.ShowDialog()
-    if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
-        $Script:textPathIn.Text = $dialog.SelectedPath
-    }
-}
+
 function Invoke-OnBrowseOutClicked { 
     [CmdletBinding(SupportsShouldProcess)]
     param ()
-    $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
-    $dialog.Description = "Select output folder"
-    $dialog.ShowNewFolderButton = $true
+    $dialog = [System.Windows.Forms.OpenFileDialog]::new()
+    $dialog.Filter = "json files (*.json)|*.json|All files (*.*)|*.*"
+    $dialog.Title = "SELECT JSON FILE CONTAINING FONT NAMES"
     $result = $dialog.ShowDialog()
     if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
-        $Script:txtPathOut.Text = $dialog.SelectedPath
+        $Script:txtPathOut.Text = $dialog.FileName
     }
+}
+
+function Initialize-FontCategoryCombo {
+    param(
+        [Parameter(Mandatory)]
+        [string]$JsonPath = ".\allfonts.json",
+        [Parameter(Mandatory)]
+        $ComboBoxControl # Pass in the actual WPF ComboBox object
+    )
+
+    # Load font list with categories
+    $allFonts = Get-Content $JsonPath -Raw | ConvertFrom-Json
+
+    # Extract all unique "Parent/SubCategory" pairs (skip missing)
+    $categoryList = $allFonts |
+        Where-Object { $_.ParentCategory -and $_.SubCategory } |
+        ForEach-Object { "$($_.ParentCategory)/$($_.SubCategory)" } |
+        Sort-Object -Unique
+
+    # Optionally, sort by Parent then SubCategory
+    # $categoryList = $categoryList | Sort-Object { $_.Split('/')[0] }, { $_.Split('/')[1] }
+
+    # Set ComboBox ItemsSource
+    $ComboBoxControl.ItemsSource = $categoryList
+    $ComboBoxControl.SelectedIndex = 0 # Optional: select first by default
+
+    Write-Host "Initialized category combo with $($categoryList.Count) values." -ForegroundColor Cyan
+}
+
+function Initialize-FontComboForCategory {
+    param(
+        [Parameter(Mandatory = $true)] [object]$Form,
+        [Parameter(Mandatory = $true)] [object[]]$AllFonts,
+        [Parameter(Mandatory = $true)] [string]$SelectedCategory
+    )
+    # Parse Parent / Sub
+    $parts = $SelectedCategory -split ' / ', 2
+    $parent = $parts[0]
+    $sub = if ($parts.Count -gt 1) { $parts[1] } else { "" }
+
+    # Filter
+    $filtered = $AllFonts | Where-Object {
+        $_.ParentCategory -eq $parent -and $_.SubCategory -eq $sub
+    }
+
+    # Clear and populate
+    $combo = $Form.FindName("comboSelectedFont")
+    $combo.Items.Clear()
+    foreach ($f in $filtered) {
+        [void]$combo.Items.Add($f.DisplayName)
+    }
+    # Optional: select first
+    if ($combo.Items.Count -gt 0) { $combo.SelectedIndex = 0 }
 }
 
 
@@ -300,7 +345,8 @@ function Initialize-ScriptRunner {
     param ()
 
     [bool]$UseFormNameAsNamespace = $True
-    [string]$XAMLPath = "$PSScriptRoot\main.xaml"
+    #[string]$XAMLPath = "$PSScriptRoot\main.xaml"
+    [string]$XAMLPath = Join-Path "$($PWD.Path)" "main.xaml"
 
     #Build the GUI
     [xml]$xaml = Get-Content $XAMLPath 
@@ -314,7 +360,10 @@ function Initialize-ScriptRunner {
     Write-Host "Variables"
     $xaml.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]")  | ForEach-Object { 
         $VarName =  "$($_.Name)"
-        $v = New-Variable  -Name $_.Name -Value $Window.FindName($_.Name) -Option AllScope -Visibility Public -Force -PassThru -Scope Global
+        $VarValue = $Window.FindName($VarName)
+        $VarValueTypeName = $VarValue.GetType().Fullname
+        Write-Host "VarName $VarName VarValueTypeName $VarValueTypeName" -ForegroundColor Cyan
+        $v = New-Variable  -Name "$VarName" -Value  -Option AllScope -Visibility Public -Force -PassThru -Scope Global
         $n=($($v.Value) -as [string]).Split(':')[0]
         $log ="[$n]`$Script:$($_.Name)"
         Write-Host "  $log" -f DarkCyan
@@ -328,15 +377,21 @@ $Script:button_clear.Add_Click(   { Invoke-OnClearClicked } )
 $Script:button_play.Add_Click(    { Invoke-OnPlayClicked } )
 $Script:btnBrowseIn.Add_Click(    { Invoke-OnBrowseInClicked } )
 $Script:btnBrowseOut.Add_Click(   { Invoke-OnBrowseOutClicked } )
-
+$Script:comboCategory.Add_SelectionChanged({
+    $cat = $comboCategory.SelectedItem.ToString()
+    Initialize-FontComboForCategory -Form $window -AllFonts $Script:allfontsJson -SelectedCategory $cat
+})
 
 
 }
 
 
+Initialize-ScriptRunner
+Initialize-FontCategoryCombo -JsonPath "$PSScriptRoot\allfonts.json" -ComboBoxControl $Script:comboFontCategory
 
-#Initialize-ScriptRunner
-#Test-RichTextLogTheme
-#$Window.ShowDialog() | Out-Null
+Test-RichTextLogTheme
+$Window.ShowDialog() | Out-Null
 
-#$v = Get-Variable  -Name "txtLogs"
+$v = Get-Variable  -Name "txtLogs"
+
+

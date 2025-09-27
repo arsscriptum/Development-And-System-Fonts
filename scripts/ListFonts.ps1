@@ -1,4 +1,4 @@
-#╔════════════════════════════════════════════════════════════════════════════════╗
+﻿#╔════════════════════════════════════════════════════════════════════════════════╗
 #║                                                                                ║
 #║   ListFonts.ps1                                                                ║
 #║                                                                                ║
@@ -6,6 +6,12 @@
 #║   Guillaume Plante <codegp@icloud.com>                                         ║
 #║   Code licensed under the GNU GPL v3.0. See the LICENSE file for details.      ║
 #╚════════════════════════════════════════════════════════════════════════════════╝
+
+
+
+
+$CategoryScript = "$PSScriptRoot\FontCategory.ps1"
+. "$CategoryScript"
 
 [System.Collections.ArrayList]$Script:TmpPreviewImagePaths = [System.Collections.ArrayList]::new()
 [System.Collections.ArrayList]$Script:ScriptsPreviewFontsList = [System.Collections.ArrayList]::new()
@@ -26,7 +32,7 @@ function Register-HtmlAgilityPack2a {
     [CmdletBinding(SupportsShouldProcess)]
     param()
     begin {
-        
+
         $ExternalsLibraryPath = Get-ExternalsLibraryPath
         $LibPath = "{0}\{1}\HtmlAgilityPack.dll" -f "$ExternalsLibraryPath", "$($PSVersionTable.PSEdition)"
     }
@@ -68,74 +74,12 @@ function Open-PreviewLocalPicture {
 
 
 
-function Get-FontCategoryIdFromName {
-    [CmdletBinding(SupportsShouldProcess= $true)]
-    param(
-        [Parameter(Mandatory = $true, HelpMessage = "Symbolic font category name (e.g. General_Various)")]
-        [ValidateNotNullOrEmpty()]
-        [string]$CategoryName
-    )
-    # Mapping table
-    $CategoryMap = @{
-        General_Cartoon = 101
-        General_Comic = 102
-        General_Groovy = 103
-        General_OldSchool = 104
-        General_Curly = 105
-        General_Western = 106
-        General_Eroded = 107
-        General_Distorted = 108
-        General_Destroy = 109
-        General_Horror = 110
-        General_FireIce = 111
-        General_Decorative = 112
-        General_Typewriter = 113
-        General_Stencil_Army = 114
-        General_Retro = 115
-        General_Initials = 116
-        General_Grid = 117
-        General_Various = 118
-
-        Techno_Square = 301
-        Techno_LCD = 302
-        Techno_SciFi = 303
-        Techno_Various = 304
-
-        Culture_Medieval = 401
-        Culture_Modern = 402
-        Culture_Celtic = 403
-        Culture_Initials = 404
-        Culture_Various = 405
-
-        Basic_SansSerif = 501
-        Basic_Serif = 502
-        Basic_Fixedwidth = 503
-        Basic_Various = 504
-
-        Script_Calligraphy = 601
-        Script_School = 602
-        Script_Handwritten = 603
-        Script_Brush = 604
-        Script_Trash = 605
-        Script_Graffiti = 606
-        Script_OldSchool = 607
-        Script_Various = 608
-    }
-    if ($CategoryMap.ContainsKey($CategoryName)) {
-        return $CategoryMap[$CategoryName]
-    } else {
-        Write-Warning "Unknown category name: $CategoryName"
-        return $null
-    }
-}
-
 
 function Invoke-ListDafontFonts {
-    [CmdletBinding(SupportsShouldProcess= $true, SupportsPaging = $true)]
+    [CmdletBinding(SupportsShouldProcess = $true, SupportsPaging = $true)]
     param(
         [Parameter(Mandatory, HelpMessage = "Font category name (e.g. General_Various)")]
-        [ValidateNotNullOrEmpty()]
-        [string]$CategoryName,
+        [FontSubCategory]$Category,
         [Parameter(Mandatory = $false)]
         [ValidateRange(1, 50)]
         [int]$Page = 1,
@@ -148,11 +92,12 @@ function Invoke-ListDafontFonts {
         [string]$Text
     )
 
+
+
+
     process {
-        $CategoryId = Get-FontCategoryIdFromName -CategoryName $CategoryName
-        if (-not $CategoryId) {
-            throw "Invalid category name: $CategoryName"
-        }
+        [int]$CategoryId = $Category -as [int]
+
         Write-Verbose "Resolved category: $CategoryName -> $CategoryId"
 
         try {
@@ -235,23 +180,22 @@ function Invoke-ListDafontFonts {
 function Get-daFontsPreviewUrls {
     [CmdletBinding(SupportsShouldProcess, SupportsPaging = $true)]
     param(
-        [Parameter(Position=0,Mandatory=$True, HelpMessage = "Font category name (e.g. General_Various)")]
-        [ValidateNotNullOrEmpty()]
-        [string]$CategoryName,
-        [Parameter(Position=1,Mandatory=$false)]
+        [Parameter(Position = 0, Mandatory = $True, HelpMessage = "Font category name (e.g. General_Various)")]
+        [FontSubCategory]$Category,
+        [Parameter(Position = 1, Mandatory = $false)]
         [ValidateRange(1, 50)]
         [int]$Page = 1,
-        [Parameter(Position=2,Mandatory = $false)]
+        [Parameter(Position = 2, Mandatory = $false)]
         [ValidateSet(25, 50, 100, 200)]
         [int]$FontsPerPage = 200,
-        [Parameter(Position=3,Mandatory = $false)]
+        [Parameter(Position = 3, Mandatory = $false)]
         [ValidateLength(4, 64)]
         [ValidateNotNullOrEmpty()]
         [string]$Text
     )
 
     process {
-        $CategoryId = Get-FontCategoryIdFromName -CategoryName $CategoryName
+        [int]$CategoryId = $Category -as [int]
         if (-not $CategoryId) { throw "Invalid category name: $CategoryName" }
         Write-Verbose "Resolved category: $CategoryName -> $CategoryId"
 
@@ -281,7 +225,7 @@ function Get-daFontsPreviewUrls {
             Write-Verbose "Response received successfully"
 
             # Load HTMLAgilityPack
-             Register-HtmlAgilityPack2a 
+            Register-HtmlAgilityPack2a
             $HtmlContent = $resp.Content
             $HtmlDoc = New-Object HtmlAgilityPack.HtmlDocument
             $HtmlDoc.LoadHtml($HtmlContent)
@@ -362,24 +306,20 @@ function Get-daFontsPreviewUrls {
 }
 
 
-function Open-PreviewUrlPicture {
+function Save-FontPreviewToLocalDisk {
     [CmdletBinding(SupportsShouldProcess, SupportsPaging = $true)]
     param(
-        [Parameter(Mandatory, HelpMessage = "picture path")]
+        [Parameter(Mandatory = $true, Position = 0)]
         [ValidateNotNullOrEmpty()]
-        [string]$Url
+        [string]$Url,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Path,
+        [Parameter(Mandatory = $false)]
+        [switch]$Force
     )
     process {
         try {
-            Add-Type -AssemblyName System.Web
-            [uri]$u = $Url
-
-            # Assuming $u is your [System.Uri] object:
-            $queryParams = [System.Web.HttpUtility]::ParseQueryString($u.Query)
-            $textValue = $queryParams["ttf"]
-            $NewPicturePath = Get-FontPreviewPicturePath $Url $CategoryName
-            Write-Verbose "Font $textValue" 
-            Write-Verbose " Saving file `"$NewPicturePath`""
 
             $Headerz = @{
                 "Accept" = "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"
@@ -389,13 +329,23 @@ function Open-PreviewUrlPicture {
                 "Referer" = "https://www.dafont.com/"
             }
             try {
-                if (-not (Test-Path "$NewPicturePath")) {
-                    Invoke-WebRequest -UseBasicParsing -Uri "$Url" -Headers $Headerz -OutFile "$NewPicturePath" -ErrorAction Stop
+                if (Test-Path "$Path" -PathType Leaf) {
+                    if ($Force) {
+                        Remove-Item -Path "$Path" -Force -EA Stop | Out-Null
+                    }
                 }
+                $ParentFolder = Split-Path $Path
+                if (!(Test-Path "$ParentFolder" -PathType Container)) {
+                    New-Iten -Path "$ParentFolder" -ItemType Directory -Force | Out-Null
+                }
+                $Res = Invoke-WebRequest -UseBasicParsing -Uri "$Url" -Headers $Headerz -OutFile "$Path" -ErrorAction Stop -Passthru
+                if ($($Res.StatusCode) -ne 200) { throw "web request error $($Res.StatusCode)" }
+                return $true
             } catch {
-                Write-Verbose "$_"
+                Write-Error "$_"
+                return $false
             }
-            "$NewPicturePath"
+
         } catch {
             Show-ExceptionDetails ($_) -ShowStack
         }
@@ -403,7 +353,7 @@ function Open-PreviewUrlPicture {
 }
 
 function Show-ImagesPreviewDialog {
-    [CmdletBinding(SupportsShouldProcess= $true)]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory, ValueFromPipeline)]
         [string[]]$ImagePaths
@@ -463,7 +413,7 @@ function Show-ImagesPreviewDialog {
 
 
 function Get-FontsModuleTemporaryDirectory {
-    [CmdletBinding(SupportsShouldProcess= $true)]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param()
     process {
 
@@ -478,7 +428,7 @@ function Get-FontsModuleTemporaryDirectory {
 
 
 function Get-FontsModuleTmpScriptsDirectory {
-    [CmdletBinding(SupportsShouldProcess= $true)]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param()
     process {
 
@@ -496,14 +446,14 @@ function Get-FontsModuleTmpScriptsDirectory {
 
 
 function Get-FontPreviewPicturePath {
-    [CmdletBinding(SupportsShouldProcess= $true)]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $true, position = 0, ValueFromPipeline = $True)]
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $True)]
         [ValidateNotNullOrEmpty()]
         [string]$Url,
-        [Parameter(Mandatory = $true, position = 1)]
+        [Parameter(Mandatory = $true, Position = 1)]
         [ValidateNotNullOrEmpty()]
-        [string]$Category 
+        [FontSubCategory]$Category
     )
     process {
         Add-Type -AssemblyName System.Web
@@ -516,9 +466,10 @@ function Get-FontPreviewPicturePath {
         $textValue = $queryParams["ttf"]
 
         $LocalPath = Get-FontsModuleTemporaryDirectory
+        $CategoryString = Get-FontCategoryStringFromId $Category
 
-        if(!([string]::IsNullOrEmpty($Category))){
-            $LocalPath = Join-Path "$LocalPath" "$Category"
+        if (!([string]::IsNullOrEmpty($Category))) {
+            $LocalPath = Join-Path "$LocalPath" "$CategoryString"
         }
 
         if (-not (Test-Path $LocalPath)) {
@@ -534,61 +485,9 @@ function Get-FontPreviewPicturePath {
 }
 
 
-function New-ScriptDecl {
-    [CmdletBinding(SupportsShouldProcess= $true)]
-    param(
-        [Parameter(Mandatory = $true, position = 0, ValueFromPipeline = $True)]
-        [ValidateNotNullOrEmpty()]
-        [string]$Path,
-        [Parameter(Mandatory = $true, position = 1)]
-        [System.Collections.ArrayList]$List
-    )
-    process {
-        $lines = @()
-        $lines += '$Global:List = [System.Collections.ArrayList]@('
-
-        foreach ($item in $List) {
-            $escaped = $item -replace '"', '\"'
-            $lines += "    `"$escaped`""
-        }
-
-        $lines += ')'
-        Set-Content -Path $Path -Value $lines -Force
-
-        Add-Content -Path $Path -Value "`n`nShow-ImagesPreviewDialog -ImagePaths `$List`n`n"
-        $Path
-    }
-}
-
-function New-ScriptDecl2 {
-    [CmdletBinding(SupportsShouldProcess= $true)]
-    param(
-        [Parameter(Mandatory = $true, position = 0, ValueFromPipeline = $True)]
-        [ValidateNotNullOrEmpty()]
-        [string]$Path,
-        [Parameter(Mandatory = $true, position = 1)]
-        [System.Collections.ArrayList]$List
-    )
-    process {
-        $lines = @()
-        $lines += '$Global:List = [System.Collections.ArrayList]@('
-
-        foreach ($item in $List) {
-            $escaped = $item -replace '"', '\"'
-            $lines += "    `"$escaped`""
-        }
-
-        $lines += ')'
-        Set-Content -Path $Path -Value $lines -Force
-
-        Add-Content -Path $Path -Value "`n`nForEach(`$item in  `$List){ . `"`$item`" }`n`n"
-
-    }
-}
-
 
 function Open-PreviewLocalPicture {
-    [CmdletBinding(SupportsShouldProcess= $true)]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory, HelpMessage = "picture path")]
         [ValidateNotNullOrEmpty()]
@@ -599,7 +498,7 @@ function Open-PreviewLocalPicture {
 
 
 function Show-ImagePreviewDialog {
-    [CmdletBinding(SupportsShouldProcess= $true)]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory)]
         [string]$ImagePath
@@ -625,113 +524,139 @@ function Show-ImagePreviewDialog {
 }
 
 
-
-function Test-PreviewLocalPicture {
-    [CmdletBinding(SupportsShouldProcess= $true)]
+function Show-Title {
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $true, position = 0)]
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Title
+    )
+    process {
+        $boxWidth   = 80
+        $innerWidth = $boxWidth - 2  # minus border chars
+        $titleLen   = $Title.Length
+        $padTotal   = $innerWidth - $titleLen
+        $padLeft    = [Math]::Floor($padTotal / 2)
+        $padRight   = $padTotal - $padLeft
+        $titleLine  = '║' + (' ' * $padLeft) + $Title + (' ' * $padRight) + '║'
+
+        Write-Host ""
+        Write-Host ('╔' + ('═' * ($boxWidth-2)) + '╗') -ForegroundColor DarkYellow
+        Write-Host $titleLine -ForegroundColor DarkRed
+        Write-Host ('╚' + ('═' * ($boxWidth-2)) + '╝') -ForegroundColor DarkYellow
+        Write-Host ""
+    }
+}
+
+function Invoke-DownloadFontsPreviews {
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param(
+        [Parameter(Mandatory = $true, Position = 0)]
         [ValidateLength(4, 64)]
         [ValidateNotNullOrEmpty()]
         [string]$Text,
-        [Parameter(Mandatory = $true)]
-        [string]$CategoryName,
+        [Parameter(Mandatory = $true, Position = 1)]
+        [FontSubCategory]$Category,
         [Parameter(Mandatory = $true)]
         [ValidateSet(25, 50, 100, 200)]
         [int]$ImagesPerFonts,
         [Parameter(Mandatory = $true)]
         [ValidateRange(1, 50)]
-        [int]$Page
+        [int]$Page,
+        [Parameter(Mandatory = $false)]
+        [switch]$OpenFontPreviewDialog
     )
     try {
         $MaxFonts = 50
-        
+
         [System.Collections.ArrayList]$Script:TmpPreviewImagePaths = [System.Collections.ArrayList]::new()
         $Script:CurrentImageIndex = 1
-        $Data = Get-daFontsPreviewUrls -CategoryName "$CategoryName" -Page $Page -FontsPerPage $MaxFonts -Text "$Text"
-    
+        $FontsPreview = Get-daFontsPreviewUrls -Category $Category -Page $Page -FontsPerPage $MaxFonts -Text "$Text"
+        $FontsPreviewCount = $FontsPreview.Count
+        $count = 0
+        Write-Host "$FontsPreviewCount Fonts Preview Available!" -f Blue
+        foreach ($preview in $FontsPreview) {
+            $count++
 
-        $Data | % {
+            Write-Host "#$count" -f DarkRed -n
+            Write-Host " => " -f DarkGray -n
+            Write-Host "$($preview.FontName)" -f DarkYellow
+
+
             [bool]$DownloadResult = $False
-            $url = $_.PreviewUrl
-            Write-Verbose "Get-FontPreviewPicturePath $url $CategoryName"
+
+            Write-Verbose "Get-FontPreviewPicturePath $($preview.PreviewUrl) $Category"
             Write-Verbose "$NewPicturePath"
-            $NewPicturePath = Get-FontPreviewPicturePath $url $CategoryName
+            $NewPicturePath = Get-FontPreviewPicturePath $preview.PreviewUrl $Category
             if (-not (Test-Path "$NewPicturePath" -PathType LEaf)) {
-                $imgPath = Open-PreviewUrlPicture $url
-                [void]$Script:TmpPreviewImagePaths.Add($imgPath)
+                $DownloadResult = Save-FontPreviewToLocalDisk $preview.PreviewUrl $NewPicturePath
+
+                $resstr = if ($DownloadResult) { "Download Success ✔" } else { "Download Failed ❌" }
+                $log = "{0,-22} {1,30}" -f "$resstr", "$NewPicturePath"
+                Write-Host "$log"
+                [void]$Script:TmpPreviewImagePaths.Add($NewPicturePath)
                 $Script:CurrentImageIndex = $Script:CurrentImageIndex + 1
 
                 $index = "[{0:d3} / {1:d3}]" -f $NumImages, $MaxFonts
-                Write-Verbose "$index" 
-                Write-Verbose " Download SUCCESS!" 
+                Write-Verbose "$index"
+                Write-Verbose " Download SUCCESS!"
                 $Script:CurrentDownloadedFiles++
                 [bool]$DownloadResult = $True
             } else {
-                Write-Host "Image preview $NewPicturePath exits!"
-                Write-Verbose "$index" 
+                Write-Verbose "$index"
                 Write-Verbose " already here"
                 [bool]$DownloadResult = $true
-                 $Path=$NewPicturePath.Replace('\\','\')
-            [void]$Script:TmpPreviewImagePaths.Add($Path)
+                $Path = $NewPicturePath.Replace('\\', '\')
+                [void]$Script:TmpPreviewImagePaths.Add($Path)
+                $resstr = if ($DownloadResult) { "Found Preview ✔" } else { "Missing File ❌" }
+                $log = "{0,-22} {1,30}" -f "$resstr", "$NewPicturePath"
+                Write-Host "$log"
             }
 
-           
+
             [pscustomobject]$resultsObject = [pscustomobject]@{
-                    ImageIndex = $Script:CurrentImageIndex
-                    TotalImages = $MaxFonts
-                    ImagePath = "$Path"
-                    Category  = "$CategoryName"
-                    DownloadResult = $DownloadResult
-                    CurrentPage = $Page
-                    NumDownloaded = $Script:CurrentDownloadedFiles
-                    TotalFonts = $Script:TotalDownloadedFiles
-                }
+                ImageIndex = $Script:CurrentImageIndex
+                TotalImages = $MaxFonts
+                ImagePath = "$Path"
+                Category = $Category
+                DownloadResult = $DownloadResult
+                CurrentPage = $Page
+                NumDownloaded = $Script:CurrentDownloadedFiles
+                TotalFonts = $Script:TotalDownloadedFiles
+            }
             $resultJson = $resultsObject | ConvertTo-Json
-            Write-Output "$resultJson"
+
         }
-      
-Show-ImagesPreviewDialog $Script:TmpPreviewImagePaths
+        if ($OpenFontPreviewDialog) {
+            Show-ImagesPreviewDialog $Script:TmpPreviewImagePaths
+        }
+
     } catch {
         Show-ExceptionDetails ($_) -ShowStack
     }
-    #Show-ImagesPreviewDialog -ImagePaths $List
 }
 
-function Invoke-DownloadFontsPreview {
-    [CmdletBinding(SupportsShouldProcess= $true)]
+function Invoke-BatchDownloadFontsPreview {
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Position=0,Mandatory=$false)]
-        [System.Collections.ArrayList]$PresetCategories,
-        [Parameter(Position=1,Mandatory=$false)]
+        [Parameter(Position = 1, Mandatory = $false)]
         [ValidateSet(25, 50, 100, 200)]
         [int]$FontsPerPage = 200,
-        [Parameter(Position=2,Mandatory=$false)]
+        [Parameter(Position = 2, Mandatory = $false)]
         [ValidateRange(1, 50)]
         [int]$PagePerCategories = 2
     )
     try {
-        if($PresetCategories -eq $Null){
-            $Cats = Get-PreviewFontsCategories
-        }else{
-            $Cats = $PresetCategories;
-
-        }
-        $CatsCount = $Cats.Count
-        Write-Verbose "[Test-DriveInsightFonts] "
-        Write-Verbose "will be loading $CatsCount categories "  
-        foreach ($cat in $Cats) {
-            Write-Verbose "$cat"
-        }
-        $PresetCategoriesCount = $PresetCategories.Count
         [uint32]$Script:CurrentDownloadedFiles = 0
         [uint32]$Script:TotalDownloadedFiles = $PagePerCategories * $FontsPerPage * $PresetCategoriesCount
-
+        $PresetCategories = Get-FontCategories
         Write-Host "Will download $PagePerCategories pages ($FontsPerPage fots per page) of category $cat. Total $($Script:TotalDownloadedFiles) fonts for this category"
 
-        ForEach($cat in $PresetCategories){
+        foreach ($cat in $PresetCategories) {
             1..$PagePerCategories | % {
                 $page = $_
-                Test-PreviewLocalPicture "DriveInsight - monitor your devices health" -CategoryName "$cat" -ImagesPerFonts $FontsPerPage -Page $page 
+                Show-Title "$($cat.Name)"
+                Test-PreviewLocalPicture "DriveInsight - monitor your devices health" -CategoryName "$cat" -ImagesPerFonts $FontsPerPage -Page $page
             }
         }
 
@@ -740,25 +665,17 @@ function Invoke-DownloadFontsPreview {
     }
 }
 
-
-
-function Get-PreviewFontsCategories {
-    [CmdletBinding(SupportsShouldProcess= $true)]
-    param()
-    try {
-        [System.Collections.ArrayList]$List = [System.Collections.ArrayList]::new()
-        $Presets = @('Culture_Various', 'Culture_Modern', 'Techno_Various', 'Techno_Square', 'Techno_Square', 'Techno_LCD', 'General_Stencil_Army', 'General_Typewriter', 'General_Various')
-        foreach ($cat in $Presets) {
-             [void]$List.Add($cat)
+function Get-FontCategories {
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param(
+        [Parameter(Mandatory = $False)]
+        [string]$Filter
+    )
+    [FontSubCategory]::GetValues([FontSubCategory]) | ForEach-Object {
+        [pscustomobject]@{
+            Name = $_.ToString()
+            Value = [int]$_
         }
-       
-        $List
-    } catch {
-        Show-ExceptionDetails ($_) -ShowStack
     }
+
 }
-
-
-
-
-

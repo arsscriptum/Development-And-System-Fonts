@@ -12,6 +12,8 @@ In short:*
 * For readable, retro-inspired coding: **IBM Plex Mono** or **JetBrains Mono**
 * All are free, and you can install multiple and try them in Windows Terminal’s preview window.
 
+https://www.fontsaddict.com/font/category/basic-monospace
+
 ---
 
 ## **Recommended Fonts for Retro/Hacker Terminal Vibe**
